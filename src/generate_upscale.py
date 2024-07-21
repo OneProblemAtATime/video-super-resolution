@@ -15,6 +15,7 @@ class upscale_video:
     def __init__(self, input_filename, remove_noise, zoom, output_filename):
         self.input_filename = input_filename
         self.rdn = None
+        self.zoom = zoom
 
         # TODO add GAN support https://idealo.github.io/image-super-resolution/#gans-model
         if remove_noise:
@@ -39,6 +40,7 @@ class upscale_video:
     """
     def upscale_images_from_video(self):
         ret, orig_img = self.vidcap.read()
+        orig_img = cv2.resize(orig_img, None, fx=self.zoom/2, fy=self.zoom/2, interpolation=cv2.INTER_LINEAR)
         count = 0
         while ret:
             sr_img = self.rdn.predict(orig_img)
